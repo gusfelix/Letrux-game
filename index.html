@@ -6,6 +6,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Letrux</title>
 
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css">
         <link rel="stylesheet" href="style.css">
         <script defer src="words.js"></script>
         <script defer src="script.js"></script>
@@ -13,12 +15,15 @@
 
     <body>
         <header>
+            <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#howToPlay">
+                <i class="bi bi-question-circle"></i>
+            </button>
             <h1 class="title">LETRUX</h1>
         </header>
 
         <main>
 
-            <div class="game-board">
+            <div class="game-board col-sm-6">
 
                 <div id="1-1" class="letra-1"></div>
                 <div id="1-2" class="letra-1"></div>
@@ -97,9 +102,69 @@
                     <div class="tecla" onclick="validWord()" style="width: fit-content;">Enter</div>
                 </div>
             </div>
+
+            
+            <div class="modal" id="howToPlay">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                
+                        <div class="modal-header">
+                            <h3 class="modal-title">Como Jogar?</h3>
+                            <button type="button" class="close" data-dismiss="modal" style="color: #fff;">X</button>
+                        </div>
+                
+                        <div class="modal-body">
+                            <p>Você terá 6 tentativas para acertar a palavra sorteada. Após cada tentativa o jogo irá te mostrar as dicas
+                                Acentos e cedilha vão ser ignorados. As dicas funcionam da seguinte forma:
+                            </p>
+                            <div class="example">
+                                <div class="letra-">R</div>
+                                <div class="letra-">A</div>
+                                <div class="letra-">I</div>
+                                <div class="letra-">O</div>
+                                <div class="letra- right">S</div>
+                            </div>
+
+                            <p style="font-size: 12pt;">Se a letra ficar verde, significa que ela está na palavra e na poisição correta</p>
+
+                            <div class="example">
+                                <div class="letra-">R</div>
+                                <div class="letra- wrong-place">A</div>
+                                <div class="letra-">I</div>
+                                <div class="letra-">O</div>
+                                <div class="letra-">S</div>
+                            </div>
+
+                            <p style="font-size: 12pt;">Se a letra ficar amarela, significa que ela está na palavra, mas na poisição correta</p>
+
+                            <div class="example">
+                                <div class="letra-">R</div>
+                                <div class="letra-">A</div>
+                                <div class="letra-">I</div>
+                                <div class="letra-">O</div>
+                                <div class="letra-">S</div>
+                            </div>
+
+                            <p style="font-size: 12pt;">Se a letra não mudar de cor, significa que ela não está na palavra</p>
+                        </div>
+
+                        <p>Quando ganhar ou acabarem as tentativas você poderá jogar novamente com uma palavra nova!</p>
+                
+
+
+                        <!-- <button type="button" class="btn btn-danger" data-dismiss="modal">Fechar</button> -->
+
+                
+                    </div>
+                </div>
+            </div>
             
         </main>
         
+        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
     </body>
 
 </html>

@@ -12,13 +12,13 @@ if(localStorage.getItem('game-data')){
     data.row = 1;
     data.won = false;
     data.word = [];
+    data.wins = data.wins;
 
     localStorage.setItem('game-data', JSON.stringify(data))
 
     for(let w of data.attempts){
 
         for(let l of w){
-
             addLetter(l);
         }
 
@@ -35,7 +35,9 @@ if(localStorage.getItem('game-data')){
         word : [],
         attempts : [],
         solution : setWord(),
+        wins : 0,
         winStreak : 0,
+        matches : 1,
         won : false
     }
 
@@ -114,17 +116,26 @@ function validWord(){
                 document.getElementById(`key-${data.word[l]}`).classList.add('wrong');
             }
         }
-        
-        if(data.word.join('') == data.solution){
+
+        if(data.word.join('') == data.solution){ //case win
+
             data.won = true;
             data.winStreak += 1;
+            data.wins += 1;
+            
+        }else if(data.row >= 6){ //case lost
+
+            data.winStreak = 0;
         }
 
         data.row  += 1;
         col = 1;
         data.attempts.push(data.word);
         data.word = [];
-    
+            
+
+        localStorage.setItem('game-data', JSON.stringify(data));
+        
         boxes.forEach(box =>{
             box.classList.remove('highlight');
             box.classList.remove('invalid');
@@ -136,7 +147,6 @@ function validWord(){
             box.classList.add('highlight')
         })
 
-        localStorage.setItem('game-data', JSON.stringify(data));
     }
 }
 
@@ -179,7 +189,8 @@ function restartGame(){
     data.word = [];
     data.attempts = [];
     data.solution = setWord();
-    data.won = false;
+    data.won = null;
+    data.matches += 1;
 
     localStorage.setItem('game-data', JSON.stringify(data))
 

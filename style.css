@@ -12,6 +12,8 @@ body{
 header{
     text-align: center;
     padding: 8px;
+    display: flex;
+    width: fit-content;
 }
 
 .title{
@@ -25,6 +27,38 @@ header{
     display: grid;
     grid-template-columns: repeat(5, 1fr);
     gap: 9px 6px;
+}
+
+[class*="letra-"]{
+    height: 60px;
+    width: 60px;
+    background-color: #444;
+    color: #eee;
+    font-weight: 1000;
+    border-radius: 5px;
+    text-align: center;
+    font-size: 23pt;
+    padding: 5px;
+}
+
+.highlight{
+    border: 3px solid #ddd !important; 
+}
+
+.invalid{
+    border: 3px solid #dc3545!important; 
+}
+
+.right{
+    background-color: rgb(0, 172, 106) !important;
+}
+
+.wrong{
+    color: #666;
+}
+
+.wrong-place{
+    background-color: rgb(201, 171, 0);
 }
 
 .keyboard{
@@ -51,39 +85,23 @@ header{
     border-radius: 5px;
     text-align: center;
     font-size: 20pt;
-    padding: 13px;
-    /* border: 3px solid #888; */
+    padding: 10px;
     cursor: pointer;
 }
 
-.highlight{
-    border: 3px solid #ddd !important; 
-}
-
-.invalid{
-    border: 3px solid rgb(238, 0, 0) !important; 
-}
-
-[class*="letra-"]{
-    height: 60px;
-    width: 60px;
-    background-color: #444;
+.modal-content{
     color: #eee;
-    font-weight: 1000;
-    border-radius: 5px;
+    background-color: #333;
+    font-size: 13pt;
+    font-weight: lighter;
     text-align: center;
-    font-size: 23pt;
-    padding: 11px;
+    padding: 15px;
 }
 
-.right{
-    background-color: rgb(0, 172, 106) !important;
-}
-
-.wrong{
-    color: #666;
-}
-
-.wrong-place{
-    background-color: rgb(201, 171, 0);
+.example{
+    margin: 20px auto;
+    width: fit-content;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 9px 6px;
 }
