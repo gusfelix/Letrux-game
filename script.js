@@ -12,20 +12,21 @@ if(localStorage.getItem('game-data')){
     data.row = 1;
     data.won = false;
     data.word = [];
-    data.wins = data.wins;
 
     localStorage.setItem('game-data', JSON.stringify(data))
 
-    for(let w of data.attempts){
+    for(let w of data.attempts){       
 
         for(let l of w){
             addLetter(l);
         }
-
+        
         validWord();
-
+        
         let data = JSON.parse(localStorage.getItem('game-data'));
         data.attempts.pop();
+
+
         localStorage.setItem('game-data', JSON.stringify(data))
     }
 
@@ -35,6 +36,7 @@ if(localStorage.getItem('game-data')){
         word : [],
         attempts : [],
         solution : setWord(),
+        solutionLetters : {a:0, b:0, c:0, d:0, e:0, f:0, g:0, h:0, i:0, j:0, k:0, l:0, m:0, n:0, o:0, p:0, q:0, r:0, s:0, t:0, u:0, v:0, w:0, x:0, y:0, z:0, },
         wins : 0,
         winStreak : 0,
         matches : 1,
@@ -117,20 +119,25 @@ function validWord(){
             }
         }
 
+        
         if(data.word.join('') == data.solution){ //case win
-
+            
             data.won = true;
             data.winStreak += 1;
             data.wins += 1;
             
+            setTimeout(() => openModal(), 1000)
+            
         }else if(data.row >= 6){ //case lost
-
+            
             data.winStreak = 0;
+            
+            setTimeout(() => openModal(), 1000)
         }
-
+        
+        data.attempts.push(data.word);
         data.row  += 1;
         col = 1;
-        data.attempts.push(data.word);
         data.word = [];
             
 
@@ -154,13 +161,15 @@ function setWord(){
     let pos = Math.floor(Math.random() * palavras.length);
     let word = palavras[pos];
 
-    console.log(word)
-
     let regexWord = /[\u00C0-\u00FF ]+/i
 
     if(regexWord.test(word) || word.length != 5){
         setWord();
     }else{
+
+        
+
+
         return word;
     }
 }
@@ -195,4 +204,8 @@ function restartGame(){
     localStorage.setItem('game-data', JSON.stringify(data))
 
     location.reload();
+}
+
+function openModal(){
+    $('#result').modal({show: true})
 }

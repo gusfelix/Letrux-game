@@ -54,11 +54,11 @@ header{
 }
 
 .wrong{
-    color: #666;
+    color: #666  !important;
 }
 
 .wrong-place{
-    background-color: rgb(201, 171, 0);
+    background-color: rgb(201, 171, 0) !important;
 }
 
 .keyboard{
