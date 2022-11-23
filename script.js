@@ -114,6 +114,10 @@ function validWord(){
                 document.getElementById(`key-${letter}`).classList.add('right');
                 document.getElementById(`key-${letter}`).classList.remove('wrong-place');
 
+                if(indexOf > -1){
+                    solution.splice(indexOf, 1, '');
+                }
+
                 boxes.forEach(box =>{
                     if(box.getAttribute("value") == letter && box.classList.contains('wrong-place')){
                         box.classList.remove('wrong-place');
