@@ -75,7 +75,6 @@
                     <div class="tecla" id="key-i" onclick="addLetter('i')">I</div>
                     <div class="tecla" id="key-o" onclick="addLetter('o')">O</div>
                     <div class="tecla" id="key-p" onclick="addLetter('p')">P</div>
-                    <div class="tecla" id="key-p" onclick="restartGame()"></div>
                 </div>
 
                 <div class="row-2">
@@ -88,7 +87,7 @@
                     <div class="tecla" id="key-j" onclick="addLetter('j')">J</div>
                     <div class="tecla" id="key-k" onclick="addLetter('k')">K</div>
                     <div class="tecla" id="key-l" onclick="addLetter('l')">L</div>
-                    <div class="tecla" onclick="delLetter()" style="width: fit-content;">Del</div>
+                    <div class="tecla" onclick="delLetter()" style="width: fit-content; padding: 13px;"><i class="bi bi-backspace"></i></div>
                 </div>
 
                 <div class="row-3">
@@ -99,7 +98,7 @@
                     <div class="tecla" id="key-b" onclick="addLetter('b')">B</div>
                     <div class="tecla" id="key-n" onclick="addLetter('n')">N</div>
                     <div class="tecla" id="key-m" onclick="addLetter('m')">M</div>
-                    <div class="tecla" onclick="validWord()" style="width: fit-content;">Enter</div>
+                    <div class="tecla" onclick="validWord()" style="width: fit-content;">ENTER</div>
                 </div>
             </div>
 
@@ -110,7 +109,7 @@
                 
                         <div class="modal-header">
                             <h3 class="modal-title">Como Jogar?</h3>
-                            <button type="button" class="close" data-dismiss="modal" style="color: #fff;">X</button>
+                            <button type="button" class="close" data-dismiss="modal" style="color: #fff;"><i class="bi bi-x-lg"></i></button>
                         </div>
                 
                         <div class="modal-body">
@@ -146,15 +145,9 @@
                             </div>
 
                             <p style="font-size: 12pt;">Se a letra não mudar de cor, significa que ela não está na palavra</p>
+
+                            <p>Quando ganhar ou acabarem as tentativas você poderá jogar novamente com uma palavra nova!</p>
                         </div>
-
-                        <p>Quando ganhar ou acabarem as tentativas você poderá jogar novamente com uma palavra nova!</p>
-                
-
-
-                        <!-- <button type="button" class="btn btn-danger" data-dismiss="modal">Fechar</button> -->
-
-                
                     </div>
                 </div>
             </div>
@@ -163,27 +156,20 @@
                 <div class="modal-dialog">
                     <div class="modal-content">
                 
-                        <div class="modal-header">
-                            <h3 class="modal-title">Parbéns, você acertou!</h3>
-                            <button type="button" class="close" data-dismiss="modal" style="color: #fff;">X</button>
+                        <div class="modal-header" >
+                            <h3 class="modal-title" id="result-message"></h3>
+                            <button type="button" class="close" data-dismiss="modal" style="color: #fff;"><i class="bi bi-x-lg"></i></button>
                         </div>
                 
-                        <div class="modal-body">
-                            <p>Você terá 6 tentativas para acertar a palavra sorteada. Após cada tentativa o jogo irá te mostrar as dicas
-                                Acentos e cedilha vão ser ignorados. As dicas funcionam da seguinte forma:
-                            </p>
+                        <div class="modal-body" style="text-align: center;">
 
+                            <p id="message" style="font-size: 18pt;"> </p>
 
-                            <p style="font-size: 12pt;">Se a letra não mudar de cor, significa que ela não está na palavra</p>
                         </div>
-
-                        <p>Quando ganhar ou acabarem as tentativas você poderá jogar novamente com uma palavra nova!</p>
-                
+                        <button type="button" class="btn btn-info" data-dismiss="modal" onclick="restartGame()">Jogar novamente <i class="bi bi-arrow-repeat"></i></button>
                     </div>
                 </div>
             </div>
-
-            <button onclick="openModal()">Fala meu bom</button>
             
         </main>
         

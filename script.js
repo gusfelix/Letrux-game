@@ -70,7 +70,7 @@ function addLetter(letra){
         document.getElementById(`${data.row}-${col}`).innerHTML = letra.toUpperCase();
         data.word.push(letra.toLowerCase());
 
-        col += 1;
+        col++;
         localStorage.setItem('game-data', JSON.stringify(data));
     }
 }
@@ -80,7 +80,7 @@ function delLetter(){
     let data = JSON.parse(localStorage.getItem('game-data'));
 
     if(col > 1){
-        col -= 1;
+        col--;
         document.getElementById(`${data.row}-${col}`).innerHTML = '';
         data.word.pop();
 
@@ -99,32 +99,32 @@ function validWord(){
     let data = JSON.parse(localStorage.getItem('game-data'));
 
     if(data.word.length == 5 && wordIn(data.word.join(''))){
-
-        let solutionA = data.solution.split('');
         
-        for(let l in data.word){
-            if(data.word[l] == solutionA[l]){
+        data.word.forEach((letter, index) =>{ ; //verifica e coloca as cores
+
+            if(letter == data.solution.charAt(index)){
                 
-                document.getElementById(`${data.row}-${parseInt(l) + 1}`).classList.add('right');
-                document.getElementById(`key-${data.word[l]}`).classList.add('right');
-                document.getElementById(`key-${data.word[l]}`).classList.remove('wrong-place');
+                document.getElementById(`${data.row}-${index + 1}`).classList.add('right');
+                document.getElementById(`key-${letter}`).classList.add('right');
+                document.getElementById(`key-${letter}`).classList.remove('wrong-place');
                 
-            }else if(solutionA.some(item => {return item == data.word[l] ? true : false})){
+            }else if(data.solution.includes(letter)){
                 
-                document.getElementById(`${data.row}-${parseInt(l) + 1}`).classList.add('wrong-place');
-                document.getElementById(`key-${data.word[l]}`).classList.add('wrong-place');
+                document.getElementById(`${data.row}-${index + 1}`).classList.add('wrong-place');
+                document.getElementById(`key-${letter}`).classList.add('wrong-place');
                 
             }else{
-                document.getElementById(`key-${data.word[l]}`).classList.add('wrong');
+                document.getElementById(`key-${letter}`).classList.add('wrong');
             }
-        }
-
+        })
         
         if(data.word.join('') == data.solution){ //case win
             
             data.won = true;
             data.winStreak += 1;
             data.wins += 1;
+
+            document.getElementById('result-message').innerHTML = 'Parabéns, você acertou!';
             
             setTimeout(() => openModal(), 1000)
             
@@ -132,6 +132,8 @@ function validWord(){
             
             data.winStreak = 0;
             
+            document.getElementById('result-message').innerHTML = 'Não foi dessa vez :(';
+            document.getElementById('message').innerHTML = 'A palavra era: ' + data.solution;
             setTimeout(() => openModal(), 1000)
         }
         
@@ -167,27 +169,22 @@ function setWord(){
         setWord();
     }else{
 
-        
-
-
         return word;
     }
 }
 
 function wordIn(word){
-    for(let wordA of palavrasBase){
 
-        if(wordA == word){
-            return true;
-        }
-    }
-    
-    boxes.forEach(box =>{
-        box.classList.add('invalid');
-    })
-    
-    console.log('nao tem');
-    return false;
+    if(palavrasBase.includes(word)){
+        return true;
+
+    }else{
+        boxes.forEach(box =>{
+            box.classList.add('invalid');
+        })
+        
+        return false;
+    }    
 }
 
 function restartGame(){
