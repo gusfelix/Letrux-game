@@ -36,8 +36,9 @@ if(localStorage.getItem('game-data')){
         word : [],
         attempts : [],
         solution : setWord(),
-        solutionLetters : {a:0, b:0, c:0, d:0, e:0, f:0, g:0, h:0, i:0, j:0, k:0, l:0, m:0, n:0, o:0, p:0, q:0, r:0, s:0, t:0, u:0, v:0, w:0, x:0, y:0, z:0, },
+        // solutionLetters : {a:0, b:0, c:0, d:0, e:0, f:0, g:0, h:0, i:0, j:0, k:0, l:0, m:0, n:0, o:0, p:0, q:0, r:0, s:0, t:0, u:0, v:0, w:0, x:0, y:0, z:0, },
         wins : 0,
+        losses : 0,
         winStreak : 0,
         matches : 1,
         won : false
@@ -68,6 +69,7 @@ function addLetter(letra){
 
     if(col <= 5 && !data.won){
         document.getElementById(`${data.row}-${col}`).innerHTML = letra.toUpperCase();
+        document.getElementById(`${data.row}-${col}`).setAttribute("value", letra);
         data.word.push(letra.toLowerCase());
 
         col++;
@@ -98,39 +100,51 @@ function validWord(){
 
     let data = JSON.parse(localStorage.getItem('game-data'));
 
-    if(data.word.length == 5 && wordIn(data.word.join(''))){
+    if(data.word.length == 5 && wordIn(data.word.join(''))){ // 
+
+        const solution = data.solution.split('');
         
         data.word.forEach((letter, index) =>{ ; //verifica e coloca as cores
+        
+            const indexOf = solution.indexOf(letter);
 
             if(letter == data.solution.charAt(index)){
                 
                 document.getElementById(`${data.row}-${index + 1}`).classList.add('right');
                 document.getElementById(`key-${letter}`).classList.add('right');
                 document.getElementById(`key-${letter}`).classList.remove('wrong-place');
+
+                boxes.forEach(box =>{
+                    if(box.getAttribute("value") == letter && box.classList.contains('wrong-place')){
+                        box.classList.remove('wrong-place');
+                    }
+                })
                 
-            }else if(data.solution.includes(letter)){
+                
+            }else if(solution.includes(letter) ){
                 
                 document.getElementById(`${data.row}-${index + 1}`).classList.add('wrong-place');
-                document.getElementById(`key-${letter}`).classList.add('wrong-place');
+                document.getElementById(`key-${letter}`).classList.add('wrong-place');     
+                
+                if(indexOf > -1){
+                    solution.splice(indexOf, 1, '');
+                }
                 
             }else{
                 document.getElementById(`key-${letter}`).classList.add('wrong');
             }
+
         })
         
         if(data.word.join('') == data.solution){ //case win
             
             data.won = true;
-            data.winStreak += 1;
-            data.wins += 1;
 
             document.getElementById('result-message').innerHTML = 'Parabéns, você acertou!';
             
             setTimeout(() => openModal(), 1000)
             
         }else if(data.row >= 6){ //case lost
-            
-            data.winStreak = 0;
             
             document.getElementById('result-message').innerHTML = 'Não foi dessa vez :(';
             document.getElementById('message').innerHTML = 'A palavra era: ' + data.solution;
@@ -190,19 +204,26 @@ function wordIn(word){
 function restartGame(){
 
     let data = JSON.parse(localStorage.getItem('game-data'));
-
+    
+    if(data.won == true){
+        data.wins++;
+        data.winStreak++;
+    }else{
+        data.winStreak = 0;
+    }
     data.row = 1;
     data.word = [];
     data.attempts = [];
     data.solution = setWord();
-    data.won = null;
-    data.matches += 1;
+
+    data.won = false;
+    data.matches++;
 
     localStorage.setItem('game-data', JSON.stringify(data))
 
     location.reload();
 }
 
-function openModal(){
+function openModal(id){
     $('#result').modal({show: true})
 }

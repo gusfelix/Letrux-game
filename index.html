@@ -15,15 +15,18 @@
 
     <body>
         <header>
+            <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#stats">
+                <i class="bi bi-bar-chart-line-fill"></i>
+            </button>
+            <h1 class="title">LETRUX</h1>
             <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#howToPlay">
                 <i class="bi bi-question-circle"></i>
             </button>
-            <h1 class="title">LETRUX</h1>
         </header>
 
         <main>
 
-            <div class="game-board col-sm-6">
+            <div class="game-board">
 
                 <div id="1-1" class="letra-1"></div>
                 <div id="1-2" class="letra-1"></div>
@@ -75,6 +78,7 @@
                     <div class="tecla" id="key-i" onclick="addLetter('i')">I</div>
                     <div class="tecla" id="key-o" onclick="addLetter('o')">O</div>
                     <div class="tecla" id="key-p" onclick="addLetter('p')">P</div>
+                    <div class="tecla" id="key-p" onclick="restartGame()"></div>
                 </div>
 
                 <div class="row-2">
@@ -167,6 +171,25 @@
 
                         </div>
                         <button type="button" class="btn btn-info" data-dismiss="modal" onclick="restartGame()">Jogar novamente <i class="bi bi-arrow-repeat"></i></button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal" id="stats">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                
+                        <div class="modal-header" >
+                            <h3 class="modal-title" id="result-message">Estatísticas    </h3>
+                            <button type="button" class="close" data-dismiss="modal" style="color: #fff;"><i class="bi bi-x-lg"></i></button>
+                        </div>
+                
+                        <div class="modal-body" style="text-align: center;">
+
+                            <p id="message" style="font-size: 18pt;"> </p>
+
+                        </div>
+                        
                     </div>
                 </div>
             </div>

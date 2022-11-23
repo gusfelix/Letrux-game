@@ -7,13 +7,16 @@
 body{
     background-color: #333;
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    align-items: center;
+    text-align: center;
 }
 
 header{
-    text-align: center;
-    padding: 8px;
+    align-items: center;
     display: flex;
     width: fit-content;
+    padding: 10px;
+    gap: 100px;
 }
 
 .title{
