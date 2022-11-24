@@ -26,17 +26,18 @@ if(localStorage.getItem('game-data')){
         let data = JSON.parse(localStorage.getItem('game-data'));
         data.attempts.pop();
 
-
         localStorage.setItem('game-data', JSON.stringify(data))
     }
 
 }else{
+    openModal('#howToPlay');
+
     let data = {
         row : 1,
         word : [],
         attempts : [],
         solution : setWord(),
-        // solutionLetters : {a:0, b:0, c:0, d:0, e:0, f:0, g:0, h:0, i:0, j:0, k:0, l:0, m:0, n:0, o:0, p:0, q:0, r:0, s:0, t:0, u:0, v:0, w:0, x:0, y:0, z:0, },
+        solutionLetters : {a:0, b:0, c:0, d:0, e:0, f:0, g:0, h:0, i:0, j:0, k:0, l:0, m:0, n:0, o:0, p:0, q:0, r:0, s:0, t:0, u:0, v:0, w:0, x:0, y:0, z:0, },
         wins : 0,
         losses : 0,
         winStreak : 0,
@@ -45,6 +46,8 @@ if(localStorage.getItem('game-data')){
     }
 
     localStorage.setItem('game-data', JSON.stringify(data))
+
+    contLettersSolution();
 }
 
 document.body.addEventListener('keyup', (event)=>{
@@ -97,10 +100,11 @@ function delLetter(){
 }
 
 function validWord(){
-
+    
     let data = JSON.parse(localStorage.getItem('game-data'));
-
-    if(data.word.length == 5){ //  && wordIn(data.word.join(''))
+    data.attempts.push(data.word);
+    
+    if(data.word.length == 5 && wordIn(data.word.join(''))){ //verifica se o tamanha da palavra é 5 e se ela é válida
 
         const solution = data.solution.split('');
         
@@ -117,13 +121,12 @@ function validWord(){
                 if(indexOf > -1){
                     solution.splice(indexOf, 1, '');
                 }
-
+                
                 boxes.forEach(box =>{
-                    if(box.getAttribute("value") == letter && box.classList.contains('wrong-place')){
+                    if(box.getAttribute("value") == letter && box.classList.contains('wrong-place') && contLetters(letter, data.word) > data.solutionLetters[letter]){
                         box.classList.remove('wrong-place');
                     }
                 })
-                
                 
             }else if(solution.includes(letter)){
                 
@@ -137,43 +140,50 @@ function validWord(){
             }else if(!data.solution.includes(letter)){
                 document.getElementById(`key-${letter}`).classList.add('wrong');
             }
-
         })
         
         if(data.word.join('') == data.solution){ //case win
             
             data.won = true;
-
             document.getElementById('result-message').innerHTML = 'Parabéns, você acertou!';
+
+            boxes.forEach(box =>{
+                box.classList.remove('highlight');
+                box.classList.remove('invalid');
+            })
             
-            setTimeout(() => openModal(), 1000)
+            setTimeout(() => openModal('#result'), 1000)
             
         }else if(data.row >= 6){ //case lost
             
             document.getElementById('result-message').innerHTML = 'Não foi dessa vez :(';
             document.getElementById('message').innerHTML = 'A palavra era: ' + data.solution;
-            setTimeout(() => openModal(), 1000)
+
+            boxes.forEach(box =>{
+                box.classList.remove('highlight');
+                box.classList.remove('invalid');
+            })
+
+            setTimeout(() => openModal('#result'), 1000);
+
+        }else{
+            data.row  += 1;
+            col = 1;
+            data.word = [];
+            
+            boxes.forEach(box =>{
+                box.classList.remove('highlight');
+                box.classList.remove('invalid');
+            })
+            
+            boxes = document.querySelectorAll(`.letra-${data.row}`);
+            
+            boxes.forEach(box =>{
+                box.classList.add('highlight')
+            })
         }
         
-        data.attempts.push(data.word);
-        data.row  += 1;
-        col = 1;
-        data.word = [];
-            
-
         localStorage.setItem('game-data', JSON.stringify(data));
-        
-        boxes.forEach(box =>{
-            box.classList.remove('highlight');
-            box.classList.remove('invalid');
-        })
-        
-        boxes = document.querySelectorAll(`.letra-${data.row}`);
-        
-        boxes.forEach(box =>{
-            box.classList.add('highlight')
-        })
-
     }
 }
 
@@ -205,6 +215,29 @@ function wordIn(word){
     }    
 }
 
+function contLettersSolution(){
+
+    let data = JSON.parse(localStorage.getItem('game-data'));
+
+    for(letter of data.solution){
+        data.solutionLetters[letter]++
+    }
+
+    localStorage.setItem('game-data', JSON.stringify(data))
+}
+
+function contLetters(letter, array){
+    let cont = 0;
+
+    for(let l of array){
+        if(letter == l){
+            cont++;
+        }
+    }
+
+    return cont;
+}
+
 function restartGame(){
 
     let data = JSON.parse(localStorage.getItem('game-data'));
@@ -213,21 +246,23 @@ function restartGame(){
         data.wins++;
         data.winStreak++;
     }else{
+        data.losses++;
         data.winStreak = 0;
     }
     data.row = 1;
     data.word = [];
     data.attempts = [];
     data.solution = setWord();
-
     data.won = false;
     data.matches++;
+    Object.keys(data.solutionLetters).forEach(key =>{data.solutionLetters[key] = 0});
 
     localStorage.setItem('game-data', JSON.stringify(data))
 
+    contLettersSolution();
     location.reload();
 }
 
 function openModal(id){
-    $('#result').modal({show: true})
+    $(id).modal({show: true})
 }
