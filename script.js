@@ -100,7 +100,7 @@ function validWord(){
 
     let data = JSON.parse(localStorage.getItem('game-data'));
 
-    if(data.word.length == 5 && wordIn(data.word.join(''))){ // 
+    if(data.word.length == 5){ //  && wordIn(data.word.join(''))
 
         const solution = data.solution.split('');
         
@@ -125,7 +125,7 @@ function validWord(){
                 })
                 
                 
-            }else if(solution.includes(letter) ){
+            }else if(solution.includes(letter)){
                 
                 document.getElementById(`${data.row}-${index + 1}`).classList.add('wrong-place');
                 document.getElementById(`key-${letter}`).classList.add('wrong-place');     
@@ -134,7 +134,7 @@ function validWord(){
                     solution.splice(indexOf, 1, '');
                 }
                 
-            }else{
+            }else if(!data.solution.includes(letter)){
                 document.getElementById(`key-${letter}`).classList.add('wrong');
             }
 
