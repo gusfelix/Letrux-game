@@ -15,9 +15,8 @@
 
     <body>
         <header>
-            <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#stats">
-                <i class="bi bi-bar-chart-line-fill"></i>
-            </button>
+
+            <div style="background-color: #ccc; padding: 8px; border-radius: 4px;" onclick="openModal('#stats')"><i class="bi bi-bar-chart-line-fill"></i></div>
             <h1 class="title">LETRUX</h1>
             <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#howToPlay">
                 <i class="bi bi-question-circle"></i>
@@ -162,7 +161,7 @@
                 
                         <div class="modal-header" >
                             <h3 class="modal-title" id="result-message"></h3>
-                            <button type="button" class="close" data-dismiss="modal" style="color: #fff;"><i class="bi bi-x-lg"></i></button>
+                            <!-- <button type="button" class="close" data-dismiss="modal" style="color: #fff;"><i class="bi bi-x-lg"></i></button> -->
                         </div>
                 
                         <div class="modal-body" style="text-align: center;">
@@ -175,18 +174,20 @@
                 </div>
             </div>
 
+
             <div class="modal" id="stats">
                 <div class="modal-dialog">
                     <div class="modal-content">
                 
                         <div class="modal-header" >
-                            <h3 class="modal-title" id="result-message">Estatísticas    </h3>
+                            <h3 class="modal-title" id="result-message">Estatísticas</h3>
                             <button type="button" class="close" data-dismiss="modal" style="color: #fff;"><i class="bi bi-x-lg"></i></button>
                         </div>
                 
-                        <div class="modal-body" style="text-align: center;">
+                        <div class="modal-body" id="graphic" style="text-align: center;">
 
-                            <p id="message" style="font-size: 18pt;"> </p>
+
+                            <!-- <p id="message" style="font-size: 18pt;"> </p> -->
 
                         </div>
                         

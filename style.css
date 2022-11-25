@@ -45,7 +45,7 @@ header{
 }
 
 .highlight{
-    border: 3px solid #ddd !important; 
+    border: 3px solid #ddd !important;
 }
 
 .invalid{
@@ -107,4 +107,11 @@ header{
     display: grid;
     grid-template-columns: repeat(5, 1fr);
     gap: 9px 6px;
+}
+
+.graphic-bar{
+    height: 30px;
+    background-color: rgb(0, 136, 215);
+    margin-top: 10px;
+    border-radius: 5px;
 }
