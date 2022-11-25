@@ -290,7 +290,14 @@ function graphic(){
 
         bar.classList.add('graphic-bar');
         bar.style.width = `${(data.winDistribution[i]/data.wins) * 100}%`;
+        bar.innerHTML = data.winDistribution[i];
 
         gameBoard.appendChild(bar);
     }
+
+    document.getElementById('matches').innerHTML = data.matches
+    document.getElementById('winRate').innerHTML = `${Math.floor(data.wins/data.matches * 100)}%`
+    document.getElementById('winStreak').innerHTML = data.winStreak
+    document.getElementById('maxStreak').innerHTML = data.maxStreak
+
 }
