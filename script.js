@@ -1,5 +1,6 @@
 var col = 1;
-var boxes = document.querySelectorAll(`.letra-${1}`);
+var boxes = document.querySelectorAll(`.letra-${col}`);
+var boxes = document.querySelectorAll(`.letra-${col}`);
 let func = false;
 
 if(localStorage.getItem('game-data')){
@@ -36,8 +37,7 @@ if(localStorage.getItem('game-data')){
 }else{ //cria os dados se o local storage estiver vazio
     openModal('#howToPlay');
 
-    var boxes = document.querySelectorAll(`.letra-${data.row}`);
-    var col = 1;
+
 
     let data = {
         row : 1,
