@@ -1,18 +1,19 @@
-let col = 1;
-let boxes = document.querySelectorAll(`.letra-${col}`);
-
-boxes.forEach(box =>{
-    box.classList.add('highlight')
-})
-
+var col = 1;
+var boxes = document.querySelectorAll(`.letra-${1}`);
+let func = false;
 
 if(localStorage.getItem('game-data')){
     
     let data = JSON.parse(localStorage.getItem('game-data'));
     
+    boxes[0].classList.add('selected')
+    boxes.forEach(box =>{
+        box.classList.add('highlight')
+    })
+    
     data.row = 1;
     data.won = false;
-    data.word = [];
+    data.word = ['', '', '', '', ''];
     
     localStorage.setItem('game-data', JSON.stringify(data))
     
@@ -30,14 +31,17 @@ if(localStorage.getItem('game-data')){
         localStorage.setItem('game-data', JSON.stringify(data))
     }
     
-    graphic();
+    graphic(); //carrega o gráfico
 
-}else{
+}else{ //cria os dados se o local storage estiver vazio
     openModal('#howToPlay');
+
+    var boxes = document.querySelectorAll(`.letra-${data.row}`);
+    var col = 1;
 
     let data = {
         row : 1,
-        word : [],
+        word : ['', '', '', '', ''],
         attempts : [],
         solution : setWord(),
         solutionLetters : {},
@@ -56,6 +60,8 @@ if(localStorage.getItem('game-data')){
 }
 
 document.body.addEventListener('keyup', (event)=>{
+
+    let data = JSON.parse(localStorage.getItem('game-data'));
     
     if(event.key.charCodeAt(0) >= 97 && event.key.charCodeAt(0) <= 122){
 
@@ -68,54 +74,81 @@ document.body.addEventListener('keyup', (event)=>{
     }else if(event.key === "Enter"){
 
         validWord();
+
+        if($('#result').is(':visible')) restartGame();
+
     }
+    // else if(event.key === "ArrowLeft"){
+    //     if(col > 1) selectBox(`${data.row}-${parseInt(col) - 1}`)
+        
+
+    // }else if(event.key === "ArrowRight"){
+    //     if(col < 5) selectBox(`${data.row}-${parseInt(col) + 1}`)
+    // }
 })
 
 function addLetter(letra){
 
     let data = JSON.parse(localStorage.getItem('game-data'));
 
-    if(col <= 5 && !data.won){
+    if(data.word.includes('') && !data.won){
+
         document.getElementById(`${data.row}-${col}`).innerHTML = letra.toUpperCase();
         document.getElementById(`${data.row}-${col}`).setAttribute("value", letra);
-        data.word.push(letra.toLowerCase());
+        
+        data.word.splice(col - 1, 1, letra.toLowerCase());
 
-        col++;
+        selectBox(`${data.row}-${parseInt(col) + 1}`);
+        
         localStorage.setItem('game-data', JSON.stringify(data));
     }
+
+    boxes.forEach(box => {
+        box.classList.remove('invalid')
+    })
+
+    func = false;
 }
 
 function delLetter(){
 
     let data = JSON.parse(localStorage.getItem('game-data'));
 
-    if(col > 1){
-        col--;
-        document.getElementById(`${data.row}-${col}`).innerHTML = '';
-        data.word.pop();
+    if(data.word.some(item => item != '' ? true : false)){
 
+        if(func){
+            selectBox(`${data.row}-${col}`);
+        }else{
+            selectBox(`${data.row}-${parseInt(col) - 1}`);
+        }
+        
+        document.getElementById(`${data.row}-${col}`).innerHTML = '';
+        data.word.splice(col - 1, 1, '');
+        
         localStorage.setItem('game-data', JSON.stringify(data));
     }
+    
+    boxes.forEach(box => {
+        box.classList.remove('invalid')
+    })
 
-    if(document.getElementById(`${data.row}-${col}`).classList.contains('invalid')){
-        boxes.forEach(box => {
-            box.classList.remove('invalid')
-        })
-    }
+    func = false;
 }
 
 function validWord(){
     
     let data = JSON.parse(localStorage.getItem('game-data'));
     
-    if(data.word.length == 5 && wordIn(data.word.join(''))) { //verifica se o tamanha da palavra é 5 e se ela é válida
+    if(data.word.length == 5 && wordIn(data.word.join(''))){ //verifica se o tamanho da palavra é 5 e se ela é válida
         
         data.attempts.push(data.word);
         const solution = data.solution.split('');
+        const word = data.word;
         
         data.word.forEach((letter, index) =>{ ; //verifica e coloca as cores
         
             const indexOf = solution.indexOf(letter);
+            
 
             if(letter == data.solution.charAt(index)){
                 
@@ -124,8 +157,12 @@ function validWord(){
                 document.getElementById(`key-${letter}`).classList.remove('wrong-place');
                 
                 boxes.forEach(box =>{
-                    if(box.getAttribute("value") == letter && box.classList.contains('wrong-place') && contLetters(letter, data.word) > data.solutionLetters[letter]){
+                    const indexOf = word.indexOf(letter);
+
+                    if(box.getAttribute("value") == letter && box.classList.contains('wrong-place') && contLetters(letter, word) >  data.solutionLetters[letter]){
                         box.classList.remove('wrong-place');
+
+                        if(indexOf > -1) word.splice(indexOf, 1, '');
                     }
                 })
                 
@@ -150,9 +187,10 @@ function validWord(){
             boxes.forEach(box =>{
                 box.classList.remove('highlight');
                 box.classList.remove('invalid');
+                box.classList.remove('selected');
             })
             
-            setTimeout(() => openResultModal(), 1000)
+            setTimeout(() => openResultModal(), 500)
             
         }else if(data.row >= 6){ //case lost
             
@@ -162,36 +200,58 @@ function validWord(){
             boxes.forEach(box =>{
                 box.classList.remove('highlight');
                 box.classList.remove('invalid');
+                box.classList.remove('selected');
             })
 
-            setTimeout(() => openResultModal(), 1000);
+            setTimeout(() => openResultModal(), 500);
 
         }else{
             data.row++;
             col = 1;
-            data.word = [];
+            data.word = ['', '', '', '', ''];
             
             boxes.forEach(box =>{
                 box.classList.remove('highlight');
                 box.classList.remove('invalid');
+                box.classList.remove('selected');
             })
             
             boxes = document.querySelectorAll(`.letra-${data.row}`);
             
+            boxes[0].classList.add('selected')
             boxes.forEach(box =>{
                 box.classList.add('highlight')
             })
         }
         
         localStorage.setItem('game-data', JSON.stringify(data));
-    }
+
+    }else{
+        boxes.forEach(box =>{
+            box.classList.add('invalid');
+        })
+        
+        return false;
+    } 
+}
+
+function selectBox(id){
+    boxes.forEach(box =>{
+        box.classList.remove('selected');
+    })
+
+    func = true;
+
+    col = id.charAt(2);
+
+    if(col <= 5) document.getElementById(id).classList.add('selected');
 }
 
 function setWord(){
     let pos = Math.floor(Math.random() * palavras.length);
     let word = palavras[pos];
 
-    let regexWord = /[\u00C0-\u00FF ]+/i
+    let regexWord = /[\u00C0-\u00FF ]+/i;
 
     if(regexWord.test(word) || word.length != 5){
         setWord();
@@ -203,16 +263,10 @@ function setWord(){
 
 function wordIn(word){
 
-    if(palavrasBase.includes(word)){
+    if(palavrasBase.includes(word) ){
         return true;
 
-    }else{
-        boxes.forEach(box =>{
-            box.classList.add('invalid');
-        })
-        
-        return false;
-    }    
+    }   
 }
 
 function contLettersSolution(){
@@ -257,7 +311,7 @@ function restartGame(){
         data.winStreak = 0;
     }
     data.row = 1;
-    data.word = [];
+    data.word = ['', '', '', '', ''];
     data.attempts = [];
     data.solution = setWord();
     data.won = false;
@@ -285,7 +339,7 @@ function graphic(){
     const gameBoard = document.getElementById('graphic');
     let data = JSON.parse(localStorage.getItem('game-data'));
     
-    for(let i = 0; i < 5; i++){
+    for(let i = 0; i <= 5; i++){
         let bar = document.createElement('div');
 
         bar.classList.add('graphic-bar');
