@@ -1,16 +1,15 @@
-var col = 1;
-var boxes = document.querySelectorAll(`.letra-${col}`);
-var boxes = document.querySelectorAll(`.letra-${col}`);
+let col = 1;
+let boxes = document.querySelectorAll(`.letra-${col}`);
 let func = false;
+
+boxes[0].classList.add('selected')
+boxes.forEach(box =>{
+    box.classList.add('highlight')
+})
 
 if(localStorage.getItem('game-data')){
     
     let data = JSON.parse(localStorage.getItem('game-data'));
-    
-    boxes[0].classList.add('selected')
-    boxes.forEach(box =>{
-        box.classList.add('highlight')
-    })
     
     data.row = 1;
     data.won = false;
@@ -36,8 +35,6 @@ if(localStorage.getItem('game-data')){
 
 }else{ //cria os dados se o local storage estiver vazio
     openModal('#howToPlay');
-
-
 
     let data = {
         row : 1,
