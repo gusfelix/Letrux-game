@@ -53,7 +53,7 @@ if(localStorage.getItem('game-data')){
 
     localStorage.setItem('game-data', JSON.stringify(data))
 
-    contLettersSolution();
+    countLettersSolution();
 }
 
 document.body.addEventListener('keyup', (event)=>{
@@ -136,7 +136,7 @@ function validWord(){
     
     let data = JSON.parse(localStorage.getItem('game-data'));
     
-    if(data.word.length == 5 && wordIn(data.word.join(''))){ //verifica se o tamanho da palavra é 5 e se ela é válida
+    if(data.word.length == 5 && palavrasBase.includes(data.word.join(''))){ //verifica se o tamanho da palavra é 5 e se ela é válida 
         
         data.attempts.push(data.word);
         const solution = data.solution.split('');
@@ -156,7 +156,7 @@ function validWord(){
                 boxes.forEach(box =>{
                     const indexOf = word.indexOf(letter);
 
-                    if(box.getAttribute("value") == letter && box.classList.contains('wrong-place') && contLetters(letter, word) >  data.solutionLetters[letter]){
+                    if(box.getAttribute("value") == letter && box.classList.contains('wrong-place') && countLetters(letter, word) > data.solutionLetters[letter]){
                         box.classList.remove('wrong-place');
 
                         if(indexOf > -1) word.splice(indexOf, 1, '');
@@ -165,8 +165,10 @@ function validWord(){
                 
             }else if(solution.includes(letter)){
                 
+                let key = document.getElementById(`key-${letter}`);
+
                 document.getElementById(`${data.row}-${index + 1}`).classList.add('wrong-place');
-                document.getElementById(`key-${letter}`).classList.add('wrong-place');     
+                if(!key.classList.contains('right')) key.classList.add('wrong-place');
                 
             }else if(!data.solution.includes(letter)){
                 document.getElementById(`key-${letter}`).classList.add('wrong');
@@ -258,15 +260,7 @@ function setWord(){
     }
 }
 
-function wordIn(word){
-
-    if(palavrasBase.includes(word) ){
-        return true;
-
-    }   
-}
-
-function contLettersSolution(){
+function countLettersSolution(){
     let data = JSON.parse(localStorage.getItem('game-data'));
     
     for(let letter of data.solution) {
@@ -280,7 +274,7 @@ function contLettersSolution(){
     localStorage.setItem('game-data', JSON.stringify(data));
 }
 
-function contLetters(letter, array){
+function countLetters(letter, array){
     let cont = 0;
 
     for(let l of array){
@@ -318,7 +312,7 @@ function restartGame(){
 
     localStorage.setItem('game-data', JSON.stringify(data));
 
-    contLettersSolution();
+    countLettersSolution();
     location.reload();
 }
 
